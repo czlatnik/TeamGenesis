@@ -1,0 +1,67 @@
+
+<chooseDataScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        canvas:
+            Color:
+                rgba: 0.5,0.5,1,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            padding: 20
+
+
+<startScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        canvas:
+            Color:
+                rgba: 0,1,0,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+            BoxLayout:
+                orientation: 'vertical'
+
+                ToggleButton:
+                    Image:
+                        source: "heartRateIcon.png"
+
+
+            BoxLayout:
+                orientation: 'vertical'
+                ToggleButton:
+                    text: app.stat2
+                    background_color: (1,0,0,1) if self.state == 'normal' else (0,1,0,1)
+                    background_normal: ""
+
+            BoxLayout:
+                orientation: 'vertical'
+                ToggleButton:
+                    text: app.stat3
+                    background_color: (1,0,0,1) if self.state == 'normal' else (0,1,0,1)
+                    background_normal: ""
+
+            BoxLayout:
+                orientation: 'vertical'
+                ToggleButton:
+                    text: app.stat4
+                    background_color: (1,0,0,1) if self.state == 'normal' else (0,1,0,1)
+                    background_normal: ""
+
+
+
+
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+<profileScreen>:
+    FloatLayout:

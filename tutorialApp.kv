@@ -1,0 +1,71 @@
+#: import random random
+
+<startScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 30
+        canvas:
+            Color:
+                rgba: 0, 0.5, 0.5, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        AnchorLayout:
+            Label:
+                text: 'Hi there, what\'s your name?'
+                font_size: 60
+                color: 0, 1, 1, 1
+                size_hint_y: None
+                size: self.texture_size
+                height: 200
+        AnchorLayout:
+            TextInput:
+                id: name_textInput
+                font_size: 65
+                size_hint_y: .5
+                size_hint_x: .5
+                height: 200
+                padding_x: 30
+                center: self.parent.center
+                background_color: .5,.2,.3,1
+                cursor_color: 0,0,0,1
+                hint_text: 'Enter your name'
+                hint_text_color: 1,1,1,1
+                multiline: False
+                on_text_validate: app.userName = name_textInput.text
+                on_text_validate: root.manager.current = 'hrScreen'
+        AnchorLayout:
+            Button:
+                id: done_Button
+                text:'Done'
+                size_hint: None, None
+                on_press: app.userName = name_textInput.text
+                on_press: root.manager.current = 'hrScreen'
+
+<hrScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: app.userName + '\'s heart rate:'
+        AnchorLayout:
+            canvas.before:
+                Color:
+                    rgba: root.r, root.g, root.b, 1.0
+                Ellipse:
+                    pos: 550,360
+                    size: 500,500
+            Label:
+                font_size: 200
+                center_x: root.width * 4
+                center_y: root.height * 3
+                text: str(app.hr)
+
+
+        AnchorLayout:
+            Button:
+                text: 'Back to menu'
+                size_hint: None, None
+                size: 200,150
+                on_press: root.manager.current = 'start'

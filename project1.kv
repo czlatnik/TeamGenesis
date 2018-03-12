@@ -1,0 +1,35 @@
+#:kivy 1.10.0
+
+<BackgroundRectangle>:
+
+    BoxLayout:
+        pos: self.pos
+        orientation: 'vertical'
+        Label:
+            text: 'Hi there. /n What''s your name?'
+            TextInput:
+                # setting the id of the widget
+                id: my_id
+                text: 'Enter your name here'
+
+        Button:
+            text: 'done'
+            font_size: 20
+            on_press: root.displayText()
+
+		Label:
+    		text: my_id.text
+
+<BackgroundCircle>:
+    canvas:
+        Color:
+            rgba: self.r, self.g, self.b, 1.0
+        Ellipse:
+            pos: 150,50
+            size: 500,500
+
+	Label:
+		font_size: 200
+		center_x: root.width * 4
+		center_y: root.height * 3
+		text: str(root.hr)
