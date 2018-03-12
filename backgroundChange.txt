@@ -1,0 +1,23 @@
+#:kivy 1.10.0
+
+<BackgroundChange>:
+	canvas:
+		Rectangle:
+			pos: 0,0
+			size: self.width / 2, self.height
+		Color:
+			rgb: .5,1,1
+
+<BackgroundCircle>:
+	FloatLayout:
+		Widget:
+			size: min(root.size), min(root.size)
+			size_hint: None, None
+			pos_hint: {'center_x': .5, 'center_y': .5}
+			canvas:
+				Color:
+					rgb: self.r,self.g,self.b
+				Rectangle:
+					pos: root.pos
+					size: root.size
+			
