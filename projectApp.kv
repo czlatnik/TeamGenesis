@@ -1,0 +1,350 @@
+
+<profileScreen>:
+    id: profScreen
+    FloatLayout:
+
+        canvas.before:
+            Color:
+                rgba: 0,0,0,1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        #Background image (changes between black and red for warning)
+        Image:
+            source: app.backgroundSource
+            #color: 0,1,1,1
+            opacity: 1
+            allow_stretch: True
+            keep_ratio: False
+            pos: self.pos
+            size: self.size
+
+        #Heart rate animation
+        HRWidget:
+            id: hrHeart
+            size: profScreen.height * 3/4, profScreen.height * 3/4
+            size_hint: None,None
+            #pos: root.width / 5, profScreen.center_y - self.height / 2.1
+            pos: moonknob.x - self.width * 2 - 30, moonknob.y + 10
+
+
+        #Moon timer animation
+        Knob:
+            id: moonknob
+            x: profScreen.center_x - self.width / 2
+            y: profScreen.center_y - self.height / 1.6
+            size: profScreen.height * 3/5, profScreen.height * 3/5
+            value: app.progressvalue
+            show_marker: True
+            knobimg_source: "img/fullmoon.png"
+            marker_img: "img/bline.png"
+            markeroff_color: 0.3, 0.3, .3, 1
+
+        #Timer Label
+        Label:
+            text: app.stopwatch
+            size: self.texture_size
+            x: profScreen.center_x - self.width / 2
+            y: profScreen.center_y - self.height / 1.78
+            font_size: moonknob.height / 4
+            color: 0,0,0,1
+
+        #Skin temperature animation
+        SkinTempWidget:
+            id: skintempID
+            size_hint: None, None
+            pos: moonknob.x + self.width + 10, moonknob.y + 10
+            size: hrHeart.width * 2, hrHeart.height * 2
+
+        #Notifications/Motivation Label
+        Label:
+            text: app.hillCaption
+            font_size: profScreen.height / 7
+            color: 1,1,1,1
+            size: self.texture_size
+            x: profScreen.center_x - self.width / 2
+            y: profScreen.center_y - self.height / 9
+            #pos: root.pos
+
+        SettingsButtonWidget:
+            size_hint: None,None
+            size: profScreen.height / 4, profScreen.height / 4
+            pos: 10,10
+            on_touch_down:
+                if self.imageClicked1 == True: root.manager.current = 'settings'
+                self.imageClicked1 = False
+
+        FishButtonWidget:
+            size_hint: None,None
+            size: profScreen.height / 4, profScreen.height / 4
+            pos: profScreen.width - self.width - 10, 10
+            on_touch_down:
+                if self.imageClicked2 == True: root.manager.current = 'scuba'
+                self.imageClicked2 = False
+
+
+<settingsScreen>:
+    id: settingScreen
+
+    FloatLayout:
+
+        BackArrowWidget:
+            size_hint: None, None
+            size: settingScreen.height / 4, settingScreen.height / 4
+            pos: 10, 10
+            on_touch_down:
+                if self.imageClicked3 == True: root.manager.current = 'profile'
+                self.imageClicked3 = False
+
+        Label:
+            id: tempUnitLabel
+            text: 'Temperature Units'
+            font_size: 50
+            color: 1,1,1,1
+            size_hint: None,None
+            size: self.texture_size
+            pos: settingScreen.width/ 4 + self.width / 5, tempButtonC.center_y + self.height
+
+        Label:
+            id: timerModeLabel
+            text: 'Timer Mode'
+            font_size: 50
+            color: 1,1,1,1
+            size_hint: None,None
+            size: self.texture_size
+            pos: settingScreen.width/ 4 + self.width * 3, timerButtonDown.center_y + self.height
+
+        Label:
+            id: settingsTitleLabel
+            text: 'Settings'
+            font_size: 70
+            color: 1,1,1,1
+            size_hint: None,None
+            size: self.texture_size
+            pos: 0, settingScreen.height - self.height
+
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: settingScreen.width *1/8, settingScreen.height / 2
+            pos: settingScreen.width/ 4, settingScreen.center_y - self.height / 2
+            spacing: 20
+            padding: 20
+
+            ToggleButton:
+                id: tempButtonC
+                text: '\xb0C'
+                font_size: 40
+                size: 250,100
+                size_hint: None, None
+                group: 'temp'
+                on_state:
+                    app.skinTempText=' \xb0C' if self.state == 'down' else ' \xb0F'
+
+            ToggleButton:
+                id: tempButtonF
+                text: ' \xb0F'
+                font_size: 40
+                size: 250,100
+                size_hint: None, None
+                group: 'temp'
+                state: 'down'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: settingScreen.width * 1/8, settingScreen.height / 2
+            pos: settingScreen.width / 4 + self.width * 2, settingScreen.center_y - self.height / 2
+            spacing: 20
+            padding: 20
+            ToggleButton:
+                id: timerButtonDown
+                text: 'Count Down'
+                font_size: 40
+                size: 250,100
+                size_hint: None, None
+                group: 'time'
+                on_state: app.countdown = True if self.state == 'down' else False
+
+            ToggleButton:
+                id: timerButtonUp
+                text: 'Count Up'
+                font_size: 40
+                size: 250,100
+                size_hint: None, None
+                group: 'time'
+                state: 'down'
+
+
+<scubaScreen>:
+    id: scubaScreen
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    Image:
+        source: app.oceanBackgroundSource
+        allow_stretch: True
+        keep_ratio: False
+        pos: scubaScreen.width / 2 - self.width / 2, root.y
+        size_hint: None, None
+        size: root.width * .5 - 10, root.height
+
+    Image:
+        source: 'img/scubagoggles.png'
+        allow_stretch:True
+        keep_ratio: False
+        pos: scubaScreen.width / 2 - self.width / 2, root.y
+        size_hint: None, None
+        size: root.width * 0.5 + 30, root.height + 2
+
+    BackArrowWidget:
+        size_hint: None, None
+        size: scubaScreen.height / 4, scubaScreen.height / 4
+        pos: 10, 10
+        on_touch_down:
+            if self.imageClicked3 == True: root.manager.current = 'profile'
+            self.imageClicked3 = False
+
+    HRWidget:
+        id: hrHeart
+        size: scubaScreen.height / 3 + 30, scubaScreen.height / 3 + 30
+        size_hint: None,None
+        pos: scubaScreen.width - self.width * 3/2, scubaScreen.center_y + self.height / 3
+
+    SkinTempWidget:
+        id: skintempID
+        size_hint: None, None
+        pos: scubaScreen.width - hrHeart.width * 3/2, scubaScreen.center_y - self.height / 2
+        size: hrHeart.width * 2, hrHeart.height * 2
+
+    Knob:
+        id: neemoknob
+        pos: 10, scubaScreen.height * 3/4  - self.height / 2
+        size: scubaScreen.height / 2.5 , scubaScreen.height / 2.5
+        value: app.progressvalue
+        show_marker: True
+        knobimg_source: "img/neemo.png"
+        marker_img: "img/bline.png"
+        markeroff_color: 0.3, 0.3, .3, 1
+
+    Label:
+        text: app.stopwatch
+        size: self.texture_size
+        size_hint: None, None
+        pos: 30 + neemoknob.width, neemoknob.center_y - self.height / 2
+        font_size: neemoknob.height / 4
+        color: 1,1,1,1
+
+<SettingsButtonWidget>:
+
+    Image:
+        id: setWidgetID
+        size: root.size
+        pos: root.pos
+        source: 'img/settings.png'
+        color: 1,1,1,1
+
+<FishButtonWidget>:
+
+    Image:
+        id: fishWidgetID
+        size: root.size
+        pos: root.pos
+        source: 'img/fish.png'
+        color: 1,1,1,1
+
+<BackArrowWidget>:
+
+    Image:
+        id: backArrowWidgetID
+        size: root.size
+        pos: root.pos
+        source: 'img/backarrow.png'
+
+<HRWidget>:
+
+    Image:
+        id:heart
+        source: 'img/heartIcon.png'
+        pos: root.pos
+        size: root.height * .75 , root.height * .75
+        allow_stretch: True
+        keep_ratio: False
+        color: root.r, root.g, root.b, 1.0
+
+    Label:
+        font_size: heart.width / 3
+        size: self.texture_size
+        x: heart.center_x - self.width / 2
+        y: heart.center_y - self.height / 2
+        text: str(app.hr)
+        color: root.labelColor
+
+<SkinTempWidget>:
+
+    Image:
+        id: thermo
+        source: 'img/thermometer.png'
+        pos:root.pos
+        size: root.height / 3, root.height / 3
+        allow_stretch: True
+        keep_ratio: False
+
+    Label:
+        id: skintempWidgetID
+        text: str(app.skinTemp) + app.skinTempText
+        size: self.texture_size
+        pos: thermo.center_x + self.width / 2 , thermo.center_y - self.height / 2
+        font_size: thermo.width / 3
+
+<Knob>
+    size_hint: None, None
+
+    canvas.before:
+        Color:
+            rgba: self.markeroff_color
+        Ellipse:
+            pos: self.pos
+            size: self.size[0], self.size[1]
+            angle_start: 0
+            angle_end: 360
+            source: self.markeroff_img
+
+        Color:
+            rgba: self.marker_color
+        Ellipse:
+            pos: self.pos
+            size: self.size[0], self.size[1]
+            angle_start: self.marker_startangle
+            angle_end: self._angle + self.marker_ahead if self._angle > self.marker_startangle else self.marker_startangle
+            source: self.marker_img
+
+        Color:
+            rgba: self.knobimg_bgcolor
+        Ellipse:
+            pos: self.pos[0] + (self.size[0] * (1 - self.knobimg_size))/2, self.pos[1] + (self.size[1] * (1 - self.knobimg_size)) / 2
+            size: self.size[0] * (self.knobimg_size), self.size[1] * (self.knobimg_size)
+
+        Color:
+            rgba: self.knobimg_color
+        PushMatrix
+        # Rotate:
+        #     angle: 360 - self._angle
+        #     origin: self.center
+        Rectangle:
+            pos: self.pos[0] + (self.size[0] * (1 - self.knobimg_size)) /2, self.pos[1] + (self.size[1] * (1 - self.knobimg_size)) / 2
+            size: self.size[0] * (self.knobimg_size), self.size[1] * (self.knobimg_size)
+            source: self.knobimg_source
+
+
+    canvas:
+        PopMatrix
+
+
